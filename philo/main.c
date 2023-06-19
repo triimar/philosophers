@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:25:53 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/18 22:35:05 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/19 21:38:26 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,17 +92,22 @@ void *roll_dice(void *arg)
 {
 	int value = (rand() % 6) + 1;
 	int *result = malloc(sizeof(int));
-	int philo_nr = *(int*)arg;
- 	printf("This is pilosopher nr %d\n", philo_nr);
+	t_seat *current_seat = (t_seat *)arg;
+	sleep(2);
+ 	printf("This is philosopher nr %d and I have %d fork\n", current_seat->nr, current_seat->fork);
 	*result = value;
-	free(arg);
 	return ((void *) result);
 }
 
+	//argv[1] - number_of_philosophers
+	//argv[2] - time_to_die
+	//argv[3] - time_to_eat
+	//argv[4] - time_to_sleep
+	//argv[5] - number_of_times_each_philosopher_must_eat (optional argument)
 int	main(int argc, char **argv)
 {
 	t_input	s_input;
-	t_seat	*s_table;
+	t_seat	**table;
 	int		philo_n;
 	int		i;
 	int		*result;
@@ -117,28 +122,32 @@ int	main(int argc, char **argv)
 	printf("philos: %d, die: %d, eat: %d, sleep: %d, must: %d\n", \
 	philo_n, s_input.death_t, s_input.eat_t, s_input.sleep_t, \
 	s_input.must_eat);
-	s_table = malloc((philo_n) * sizeof(t_seat));
-	// s_table[philo_n] = NULL;
+	table = malloc((philo_n + 1) * sizeof(t_seat *));
+	if (!table)
+		return (2);
+	table[philo_n] = NULL;
 	while (i < philo_n)
 	{
-		(s_table[i]).philo = i + 1;
-		if (pthread_create(&s_table[i++].philo_thread, NULL, &roll_dice, NULL) != 0)
+		table[i] = malloc(sizeof(t_seat));
+		if (!table[i])
+			return (2);
+		table[i]->nr = i + 1;
+		table[i]->fork = 1;
+		if (pthread_create(&table[i]->philo, NULL, &roll_dice, table[i]) != 0)
 			return (1);
+		i++;
 	}
 	i = 0;
 	while (i < philo_n)
 	{
-		if (pthread_join(s_table[i++].philo_thread, (void **)&result) != 0)
+		if (pthread_join(table[i]->philo, (void **)&result) != 0)
 			return (3);
-		printf("philo %d returned %d\n", i, *result);
+		printf("philo %d returned %d\n", table[i]->nr, *result);
+		free(table[i]);
 		free(result);
+		i++;
 	}
-	free(s_table);
+	free(table);
 	return (0);
-	//argv[1] - number_of_philosophers
-	//argv[2] - time_to_die
-	//argv[3] - time_to_eat
-	//argv[4] - time_to_sleep
-	//argv[5] - number_of_times_each_philosopher_must_eat (optional argument)
 }
 

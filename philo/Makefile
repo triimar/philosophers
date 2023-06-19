@@ -6,7 +6,7 @@
 #    By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 16:08:32 by tmarts            #+#    #+#              #
-#    Updated: 2023/06/18 16:56:55 by tmarts           ###   ########.fr        #
+#    Updated: 2023/06/19 21:01:07 by tmarts           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,7 @@ RESET	:= \033[0m
 #//= Mandatory part =//#
 NAME			:= philo
 # CC			:= cc # ($(CC) is by default cc in makefile)
-CFLAGS 			:= -Wall -Wextra -Werror -pthread
-# -g3 -fsanitize=address # added sanitizer flag for testing
+CFLAGS 			:= -Wall -Wextra -Werror -pthread -g3 -fsanitize=address # added sanitizer flag for testing
 
 INCLUDE_DIR		:= ./include
 

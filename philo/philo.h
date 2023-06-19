@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:38:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/18 22:18:19 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/19 21:20:27 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ typedef struct s_input
 
 typedef struct s_seat
 {
-	int					philo;
-	pthread_t			philo_thread;
+	int					nr;
+	pthread_t			philo;
 	// pthread_mutex_t		check_fork;
-	// int					fork;
+	int					fork;
 }	t_seat;
 
-typedef struct s_table
-{
-	t_seat	*table;
-	// t_input	schedule;
-}	t_table;
+// typedef struct s_table
+// {
+// 	t_seat	*table;
+// 	// t_input	schedule;
+// }	t_table;
 
 int	basic_input_check(char **args);
 int	init_input_data(char **args_to_atoi, t_input *s_input, int *philo_n);
