@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:44:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/18 22:07:45 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/20 17:38:39 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,22 @@ static int	ft_isdigit_str(char *str)
 	return (1);
 }
 
-int	basic_input_check(char **args)
+int	basic_input_check(int argc, char **args)
 {
+	if (argc < 5 || argc > 6)
+	{
+		write(STDERR_FILENO, "input error\n", 12);
+		return (EXIT_FAILURE);
+	}
 	if (!ft_isdigit_str(args[0]) || !ft_isdigit_str(args[1]) || \
 	!ft_isdigit_str(args[2]) || !ft_isdigit_str(args[3]))
 	{
-		perror("input error");
+		write(STDERR_FILENO, "input error\n", 12);
 		return (EXIT_FAILURE);
 	}
 	if (args[4] && !ft_isdigit_str(args[4]))
 	{
-		perror("input error");
+		write(STDERR_FILENO, "input error\n", 12);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

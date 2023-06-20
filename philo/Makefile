@@ -6,7 +6,7 @@
 #    By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 16:08:32 by tmarts            #+#    #+#              #
-#    Updated: 2023/06/19 21:01:07 by tmarts           ###   ########.fr        #
+#    Updated: 2023/06/20 21:29:09 by tmarts           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,9 +33,9 @@ HEADERS 		:= -I $(INCLUDE_DIR)
 
 SRCS	:= \
 	main.c \
-	philo_input_init.c
-	
-
+	philo_input_init.c \
+	set_table.c \
+	clear_table.c
 
 OBJS := $(SRCS:.c=.o)
 # $(LEXER_SRC:.c=.o)
