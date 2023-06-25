@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:44:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/21 14:48:17 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/25 17:17:20 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,35 +49,6 @@ int	basic_input_check(int argc, char **args)
 	return (EXIT_SUCCESS);
 }
 
-// static int	ft_atoi(const char *str)
-// {
-// 	long long		intvalue;
-// 	int				neg_pos;
-
-// 	intvalue = 0;
-// 	neg_pos = 1;
-// 	while ((*str == ' ' || *str == '\f' || *str == '\n'
-// 			|| *str == '\r' || *str == '\t' || *str == '\v'))
-// 		str++;
-// 	if (*str == '-')
-// 	{
-// 		neg_pos = -1;
-// 		str++;
-// 	}	
-// 	else if (*str == '+')
-// 		str++;
-// 	while (*str >= 48 && *str <= 57)
-// 	{
-// 		intvalue = intvalue * 10 + (*str - '0');
-// 		if (intvalue < 0 && neg_pos < 0)
-// 			return (0);
-// 		if (intvalue < 0 && neg_pos > 0)
-// 			return (-1);
-// 		str++;
-// 	}
-// 	return ((int)(intvalue * neg_pos));
-// }
-
 static unsigned long	ft_philo_atoi(const char *str)
 {
 	unsigned long long		intvalue;
@@ -105,6 +76,9 @@ int	init_input(char **args, t_input *s_input, unsigned int *philos)
 	if (*philos <= 0 || s_input->death_t <= 0 || \
 	s_input->eat_t <= 0 || s_input->sleep_t <= 0 \
 	|| s_input->must_eat < 0)
-		return (EXIT_FAILURE); //
-	return (EXIT_SUCCESS);	
+	{
+		write(STDERR_FILENO, "input error\n", 12);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

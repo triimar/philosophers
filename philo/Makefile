@@ -6,7 +6,7 @@
 #    By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 16:08:32 by tmarts            #+#    #+#              #
-#    Updated: 2023/06/21 14:17:51 by tmarts           ###   ########.fr        #
+#    Updated: 2023/06/25 21:59:54 by tmarts           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,8 @@ RESET	:= \033[0m
 #//= Mandatory part =//#
 NAME			:= philo
 # CC			:= cc # ($(CC) is by default cc in makefile)
-CFLAGS 			:= -Wall -Wextra -Werror -pthread -g3 -fsanitize=address # added sanitizer flag for testing
-
+CFLAGS 			:= -Wall -Wextra -Werror -pthread -g3 #-fsanitize=address
+CFLAGS 			+= -fsanitize=thread
 INCLUDE_DIR		:= ./include
 
 HEADERS 		:= -I $(INCLUDE_DIR)
@@ -36,17 +36,17 @@ SRCS	:= \
 	philo_input_init.c \
 	set_table.c \
 	clear_table.c \
-	time.c
+	time.c \
+	philo_utils.c
 
 OBJS := $(SRCS:.c=.o)
-# $(LEXER_SRC:.c=.o)
 
 #//= Make Rules =//#
 all : $(NAME)
 
 $(NAME)	: $(OBJS)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) && \
-	echo "$(MAGENTA)>> Mandatory part - Philosophers <<$(RESET)" && \
+	echo "$(WHITE)>> Mandatory part - Philosophers <<$(RESET)" && \
 	echo "$(GREEN)Compilation successful!$(RESET)"
 
 %.o: %.c
