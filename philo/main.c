@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:25:53 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/25 22:43:28 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:53:16 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 {
 	t_table			*table;
 	t_input			s_input;
-	t_center		lazy_susan;
+	t_center		lazy_susan;git
 
 	if (basic_input_check(argc, argv + 1) != 0)
 		return (EXIT_FAILURE);
@@ -34,11 +34,10 @@ int	main(int argc, char **argv)
 	}
 	if (init_input((argv + 1), &s_input, &table->philo_count) != 0)
 		return (free(table), EXIT_FAILURE);
-	printf("%u, %ld, %ld, %ld, %d\n", table->philo_count, s_input.death_t, s_input.eat_t, s_input.sleep_t, s_input.must_eat);
 	table->schedule = &s_input;
 	table->lazy_susan = &lazy_susan;
-	// printf("start time %ld\n", lazy_susan.start_time);
 	set_table(table);
+	seat_diners(table->seats, table->philo_count);
 	clear_table(table);
 	return (EXIT_SUCCESS);
 }

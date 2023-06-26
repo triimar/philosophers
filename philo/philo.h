@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:38:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/25 23:07:40 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:47:25 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ typedef struct s_input
 
 typedef struct s_center
 {
-	pthread_mutex_t		printer;
-	pthread_mutex_t		reaper;
-	pthread_mutex_t		time_start;
+	pthread_mutex_t		printer_mutex;
+	pthread_mutex_t		reaper_mutex;
+	pthread_mutex_t		start_mutex;
 	int					no_spagetti;
+	int					death;
 	unsigned long		start_time;
 }	t_center;
 
@@ -46,7 +47,6 @@ typedef struct s_seat
 	pthread_mutex_t		*next_fork;
 	t_input				*schedule;
 	t_center			*lazy_susan;
-	unsigned long		prev_start;
 }	t_seat;
 
 typedef struct s_table
@@ -54,17 +54,18 @@ typedef struct s_table
 	unsigned int		philo_count;
 	t_seat				*seats;
 	t_input				*schedule;
-	pthread_t			waiter;
 	t_center			*lazy_susan;
 }	t_table;
 
 int				basic_input_check(int argc, char **args);
 int				init_input(char **args, t_input *s_input, unsigned int *philos);
 int				set_table(t_table *table);
+int				seat_diners(t_seat *seats, int philo_count);
 void			*routine(void *arg);
 int				clear_table(t_table *table);
 unsigned long	current_time(void);
 unsigned long	time_elapsed(unsigned long start);
-void			printer(pthread_mutex_t *mx, unsigned long t, int n, char *str);
+int				check_pulse(t_center *lazy_susan);
+void			printer(t_seat	*seat, unsigned long big_bang, char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 16:14:44 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/25 23:24:17 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:36:34 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,22 @@
 // }
 
 
-void	printer(pthread_mutex_t *mx, unsigned long t, int n, char *str)
+void	printer(t_seat	*seat, unsigned long big_bang, char *str)
 {
-	pthread_mutex_lock(mx);
-	// ft_putnbr_unsigned(t, 1);
-	// write(1, "\n", 1);
-	// str = NULL;
-	// n = 1;
-	printf("%03ld %d %s\n", t, n, str);
-	pthread_mutex_unlock(mx);
+	if (check_pulse(seat->lazy_susan) == 0)
+	{
+		pthread_mutex_lock(&seat->lazy_susan->printer_mutex);
+		printf("%3ld %2d %s\n", (current_time() - big_bang), seat->nr, str);
+		return ;
+	}
+	pthread_mutex_lock(&seat->lazy_susan->printer_mutex);
+	printf("%3ld %2d %s\n", (current_time() - big_bang), seat->nr, str);
+	pthread_mutex_unlock(&seat->lazy_susan->printer_mutex);
 }
+
+// void	printer(pthread_mutex_t *mutex, unsigned long t, int n, char *str)
+// {
+// 	pthread_mutex_lock(mutex);
+// 	printf("%3ld %2d %s\n", current_time() - t, n, str);
+// 	pthread_mutex_unlock(mutex);
+// }
