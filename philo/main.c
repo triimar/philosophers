@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:25:53 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/27 00:53:16 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:54:33 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 {
 	t_table			*table;
 	t_input			s_input;
-	t_center		lazy_susan;git
+	t_center		lazy_susan;
 
 	if (basic_input_check(argc, argv + 1) != 0)
 		return (EXIT_FAILURE);
