@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:44:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/25 17:17:20 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/28 00:35:56 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static unsigned long	ft_philo_atoi(const char *str)
 	unsigned long long		intvalue;
 
 	intvalue = 0;
-
 	while (*str >= 48 && *str <= 57)
 	{
 		intvalue = intvalue * 10 + (*str - '0');
@@ -66,16 +65,15 @@ static unsigned long	ft_philo_atoi(const char *str)
 int	init_input(char **args, t_input *s_input, unsigned int *philos)
 {
 	*philos = ft_philo_atoi(args[0]);
-	s_input->death_t = ft_philo_atoi(args[1]);
-	s_input->eat_t = ft_philo_atoi(args[2]);
-	s_input->sleep_t = ft_philo_atoi(args[3]);
+	s_input->death_t = (t_ms)ft_philo_atoi(args[1]);
+	s_input->eat_t = (t_ms)ft_philo_atoi(args[2]);
+	s_input->sleep_t = (t_ms)ft_philo_atoi(args[3]);
 	if (args[4])
 		s_input->must_eat = ft_philo_atoi(args[4]);
 	else
 		s_input->must_eat = 0;
 	if (*philos <= 0 || s_input->death_t <= 0 || \
-	s_input->eat_t <= 0 || s_input->sleep_t <= 0 \
-	|| s_input->must_eat < 0)
+	s_input->eat_t <= 0 || s_input->sleep_t <= 0)
 	{
 		write(STDERR_FILENO, "input error\n", 12);
 		return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:25:53 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/27 00:54:33 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/28 01:29:26 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,19 @@ int	main(int argc, char **argv)
 	table = malloc(sizeof(t_table));
 	if (!table)
 	{
-		write(STDERR_FILENO, "malloc fail\n", 12);
+		write(STDERR_FILENO, "malloc fail\n", 13);
 		return (EXIT_FAILURE);
 	}
 	if (init_input((argv + 1), &s_input, &table->philo_count) != 0)
 		return (free(table), EXIT_FAILURE);
 	table->schedule = &s_input;
 	table->lazy_susan = &lazy_susan;
-	set_table(table);
-	seat_diners(table->seats, table->philo_count);
+	if (set_table(table) != 0)
+		return (free(table), EXIT_FAILURE);
+	if (seat_diners(table->seats, table->philo_count) != 0)
+		return (clear_table(table), EXIT_FAILURE);
+	if (escort_philos(table) != 0)
+		return (clear_table(table), EXIT_FAILURE);
 	clear_table(table);
 	return (EXIT_SUCCESS);
 }

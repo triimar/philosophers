@@ -6,7 +6,7 @@
 #    By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 16:08:32 by tmarts            #+#    #+#              #
-#    Updated: 2023/06/27 00:50:38 by tmarts           ###   ########.fr        #
+#    Updated: 2023/06/28 00:39:10 by tmarts           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ RESET	:= \033[0m
 #//= Mandatory part =//#
 NAME			:= philo
 # CC			:= cc # ($(CC) is by default cc in makefile)
-CFLAGS 			:= -Wall -Wextra -Werror -pthread -g3 -fsanitize=address
+CFLAGS 			:= -Wall -Wextra -Werror -pthread -g3 #-fsanitize=address
 #CFLAGS 			+= -fsanitize=thread
 INCLUDE_DIR		:= ./include
 
@@ -35,10 +35,11 @@ SRCS	:= \
 	main.c \
 	philo_input_init.c \
 	set_table.c \
-	clear_table.c \
+	routine.c \
+	eat_sleep_think.c \
 	time.c \
-	philo_utils.c \
-	routine.c
+	printer.c \
+	clear_table.c
 
 OBJS := $(SRCS:.c=.o)
 

@@ -6,13 +6,13 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 17:16:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/27 00:41:55 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/28 00:40:40 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	wait_spagetti(unsigned long *start_t, t_seat *current_seat)
+static void	wait_spagetti(t_ms *start_t, t_seat *current_seat)
 {
 	while (1)
 	{
@@ -44,94 +44,44 @@ int	check_pulse(t_center *lazy_susan)
 	return (1);
 }
 
-void	eating(t_seat *seat, unsigned long big_bang, unsigned long *hunger_st)
+static void	philo_died(t_seat *seat, t_ms big_bang)
 {
-	if (seat->nr % 2 != 0)
-	{
-		pthread_mutex_lock(&seat->fork);
-		printer(seat, big_bang, "has taken a fork");
-		if (&seat->fork == seat->next_fork)
-		{
-			usleep(1000 *(seat->schedule->death_t - time_elapsed(*hunger_st)));
-			return ;
-		}
-		pthread_mutex_lock(seat->next_fork);
-		printer(seat, big_bang, "has taken a fork");
-		printer(seat, big_bang, "is eating");
-		*hunger_st = current_time();
-		usleep(1000 * seat->schedule->eat_t);
-		pthread_mutex_unlock(&seat->fork);
-		pthread_mutex_unlock(seat->next_fork);
-	}
-	else
-	{
-		usleep(1000 * seat->schedule->eat_t);
-		pthread_mutex_lock(seat->next_fork);
-		printer(seat, big_bang, "has taken a fork");
-		pthread_mutex_lock(&seat->fork);
-		printer(seat, big_bang, "has taken a fork");
-		printer(seat, big_bang, "is eating");
-		*hunger_st = current_time();
-		usleep(1000 * seat->schedule->eat_t);
-		pthread_mutex_unlock(seat->next_fork);
-		pthread_mutex_unlock(&seat->fork);
-	}
-}
-
-int	sleeping(t_seat *seat, unsigned long big_bang, unsigned long hunger_start)
-{
-	unsigned long	i;
-
-	i = 0;
-	printer(seat, big_bang, "is sleeping");
-	while (i < seat->schedule->sleep_t)
-	{
-		usleep(1000);
-		if (time_elapsed(hunger_start) >= seat->schedule->death_t)
-			return (1);
-		i++;
-	}
-	return (0);
+	if (check_pulse(seat->lazy_susan) == 0)
+		return ;
+	pthread_mutex_lock(&seat->lazy_susan->reaper_mutex);
+	seat->lazy_susan->death = 1;
+	pthread_mutex_unlock(&seat->lazy_susan->reaper_mutex);
+	pthread_mutex_lock(&seat->lazy_susan->printer_mutex);
+	printf("%-5ld %2d %s\n", (current_time() - big_bang), seat->nr, "died");
+	pthread_mutex_unlock(&seat->lazy_susan->printer_mutex);
+	return ;
 }
 
 void	*routine(void *arg)
 {
 	t_seat			*current_seat;
-	unsigned long	big_bang;
-	unsigned long	hunger_start;
-	int				eats;
+	t_ms			big_bang;
+	t_philo			philo;
 
-	eats = 0;
+	big_bang = 0;
 	current_seat = (t_seat *)arg;
 	wait_spagetti(&big_bang, current_seat);
-	hunger_start = big_bang;
-	while (time_elapsed(hunger_start) < current_seat->schedule->death_t)
+	philo.hunger_start = big_bang;
+	philo.meal_count = 0;
+	while (time_elapsed(philo.hunger_start) < current_seat->schedule->death_t)
 	{
 		if (check_pulse(current_seat->lazy_susan) == 0)
-			return ((void *) &current_seat->nr);
-		eating(current_seat, big_bang, &hunger_start);
-		eats++;
-		if (current_seat->schedule->must_eat != 0 && eats == current_seat->schedule->must_eat)
-			return ((void *) &current_seat->nr);			
-		if (check_pulse(current_seat->lazy_susan) == 0)
-			return ((void *) &current_seat->nr);
-		if (sleeping(current_seat, big_bang, hunger_start) != 0)
+			return (NULL);
+		if (eating(current_seat, big_bang, &philo.hunger_start) != 0)
 			break ;
-		if (check_pulse(current_seat->lazy_susan) == 0)
-			return ((void *) &current_seat->nr);
+		if ((current_seat->schedule->must_eat != 0 && \
+		++philo.meal_count == current_seat->schedule->must_eat) || \
+		check_pulse(current_seat->lazy_susan) == 0)
+			return (NULL);
+		if (sleeping(current_seat, big_bang, philo.hunger_start) != 0)
+			break ;
 		printer(current_seat, big_bang, "is thinking");
 	}
-	if (check_pulse(current_seat->lazy_susan) == 0)
-		return ((void *) &current_seat->nr);
-	pthread_mutex_lock(&current_seat->lazy_susan->reaper_mutex);
-	current_seat->lazy_susan->death = 1;
-	pthread_mutex_unlock(&current_seat->lazy_susan->reaper_mutex);
-	printer(current_seat, big_bang, "died");
-	pthread_mutex_unlock(&current_seat->lazy_susan->printer_mutex);
-	return ((void *) &current_seat->nr);
+	philo_died(current_seat, big_bang);
+	return (NULL);
 }
-
-	// current_seat->prev_start = current_time();
-	// prev_start = current_time();
-	// printer(&current_seat->lazy_susan->printer_mutex, \
-	// 	big_bang, current_seat->nr, "is starting");

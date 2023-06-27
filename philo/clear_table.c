@@ -6,40 +6,53 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 21:27:50 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/26 22:18:18 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/28 01:29:52 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	clear_forks(t_seat *seats, int philo_count)
+static void	clear_forks(t_seat *seats, unsigned int philo_count)
 {
-	int	i;
+	unsigned int	i;
 
-	i = -1;
+	i = 0;
 	while (++i < philo_count)
+	{
 		pthread_mutex_destroy(&seats[i].fork);
+		i++;
+	}
 }
 
-int	clear_table(t_table *table)
+int	escort_philos(t_table *table)
 {
 	unsigned int		i;
-	int		*result; //
 
 	i = 0;
 	while (i < table->philo_count)
 	{
-		if (pthread_join(table->seats[i].philo, (void **)&result) != 0)
+		if (pthread_join(table->seats[i].philo, NULL) != 0)
+		{
+			while (i < table->philo_count)
+			{
+				pthread_detach(table->seats[i].philo);
+				i--;
+			}
+			write(STDERR_FILENO, "pthread_join fail\n", 20);
 			return (3);
-		// printf("philo %d returned %d\n", table->seats[i].nr, *result);
-		// write(1, "s\n", 2);
+		}
 		i++;
 	}
+	return (0);
+}
+
+void	clear_table(t_table *table)
+{
 	pthread_mutex_destroy(&table->lazy_susan->start_mutex);
 	pthread_mutex_destroy(&table->lazy_susan->printer_mutex);
 	pthread_mutex_destroy(&table->lazy_susan->reaper_mutex);
 	clear_forks(table->seats, table->philo_count);
 	free(table->seats);
 	free(table);
-	return (0);
+	return ;
 }
