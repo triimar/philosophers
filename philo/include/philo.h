@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:38:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/28 01:31:40 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/29 00:57:30 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ void	*routine(void *arg);
 t_ms	current_time(void);
 void	printer(t_seat	*seat, t_ms big_bang, char *str);
 t_ms	time_elapsed(t_ms start);
+int		sleeping_or_dead(t_ms hunger_start, t_ms sleep_time, t_ms death_time);
 int		check_pulse(t_center *lazy_susan);
-int		sleeping(t_seat *seat, t_ms big_bang, t_ms hunger);
-int		eating(t_seat *seat, t_ms big_bang, t_ms *hunger);
+// int		sleeping(t_seat *seat, t_ms big_bang, t_ms hunger);
+void	thinking(t_seat *seat, t_ms big_bang, t_ms hunger_start);
+int		eating(t_seat *seat, t_ms big_bang, t_ms *hunger, int meal_count);
 int		escort_philos(t_table *table);
 void	clear_table(t_table *table);
 

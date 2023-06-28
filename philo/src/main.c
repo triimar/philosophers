@@ -6,17 +6,17 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:25:53 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/28 01:29:26 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/28 14:36:49 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-	//argv[1] - number_of_philosophers
-	//argv[2] - time_to_die
-	//argv[3] - time_to_eat
-	//argv[4] - time_to_sleep
-	//argv[5] - number_of_times_each_philosopher_must_eat (optional argument)
+/*	argv[1] - number_of_philosophers
+	argv[2] - time_to_die
+	argv[3] - time_to_eat
+	argv[4] - time_to_sleep
+	argv[5] - number_of_times_each_philosopher_must_eat (optional)	*/
 
 int	main(int argc, char **argv)
 {

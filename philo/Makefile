@@ -6,25 +6,18 @@
 #    By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 16:08:32 by tmarts            #+#    #+#              #
-#    Updated: 2023/06/28 00:39:10 by tmarts           ###   ########.fr        #
+#    Updated: 2023/06/28 22:50:25 by tmarts           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #//= Colors =//#
 BOLD	:= \033[1m
-BLACK	:= \033[30;1m
-RED		:= \033[31;1m
 GREEN	:= \033[32;1m
-YELLOW	:= \033[33;1m
-BLUE	:= \033[34;1m
-MAGENTA	:= \033[35;1m
-CYAN	:= \033[36;1m
 WHITE	:= \033[37;1m
 RESET	:= \033[0m
 
 #//= Mandatory part =//#
 NAME			:= philo
-# CC			:= cc # ($(CC) is by default cc in makefile)
 CFLAGS 			:= -Wall -Wextra -Werror -pthread -g3 #-fsanitize=address
 #CFLAGS 			+= -fsanitize=thread
 INCLUDE_DIR		:= ./include
@@ -32,14 +25,14 @@ INCLUDE_DIR		:= ./include
 HEADERS 		:= -I $(INCLUDE_DIR)
 
 SRCS	:= \
-	main.c \
-	philo_input_init.c \
-	set_table.c \
-	routine.c \
-	eat_sleep_think.c \
-	time.c \
-	printer.c \
-	clear_table.c
+	src/main.c \
+	src/philo_input_init.c \
+	src/set_table.c \
+	src/philo_routine.c \
+	src/eat_sleep_think.c \
+	src/time.c \
+	src/printer.c \
+	src/clear_table.c
 
 OBJS := $(SRCS:.c=.o)
 

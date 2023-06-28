@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 21:27:50 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/28 01:29:52 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/28 20:20:41 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	escort_philos(t_table *table)
 				pthread_detach(table->seats[i].philo);
 				i--;
 			}
-			write(STDERR_FILENO, "pthread_join fail\n", 20);
+			write(STDERR_FILENO, "pthread_join fail\n", 19);
 			return (3);
 		}
 		i++;

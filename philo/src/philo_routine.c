@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   philo_routine.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 17:16:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/28 00:40:40 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/29 00:56:54 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
-static void	wait_spagetti(t_ms *start_t, t_seat *current_seat)
+static void	wait_spagetti(t_ms *big_bang, t_seat *cur_seat)
 {
 	while (1)
 	{
-		pthread_mutex_lock(&current_seat->lazy_susan->start_mutex);
-		if (current_seat->lazy_susan->no_spagetti)
+		pthread_mutex_lock(&cur_seat->lazy_susan->start_mutex);
+		if (cur_seat->lazy_susan->no_spagetti)
 		{
-			pthread_mutex_unlock(&current_seat->lazy_susan->start_mutex);
-			usleep(1000);
+			pthread_mutex_unlock(&cur_seat->lazy_susan->start_mutex);
+			usleep(500);
 		}
 		else
 		{
-			*start_t = current_seat->lazy_susan->start_time;
-			pthread_mutex_unlock(&current_seat->lazy_susan->start_mutex);
+			*big_bang = cur_seat->lazy_susan->start_time;
+			pthread_mutex_unlock(&cur_seat->lazy_susan->start_mutex);
 			break ;
 		}	
 	}
@@ -59,29 +59,29 @@ static void	philo_died(t_seat *seat, t_ms big_bang)
 
 void	*routine(void *arg)
 {
-	t_seat			*current_seat;
+	t_seat			*cur_seat;
 	t_ms			big_bang;
 	t_philo			philo;
 
 	big_bang = 0;
-	current_seat = (t_seat *)arg;
-	wait_spagetti(&big_bang, current_seat);
+	cur_seat = (t_seat *)arg;
+	wait_spagetti(&big_bang, cur_seat);
 	philo.hunger_start = big_bang;
 	philo.meal_count = 0;
-	while (time_elapsed(philo.hunger_start) < current_seat->schedule->death_t)
+	while (time_elapsed(philo.hunger_start) < cur_seat->schedule->death_t)
 	{
-		if (check_pulse(current_seat->lazy_susan) == 0)
+		if (check_pulse(cur_seat->lazy_susan) == 0)
 			return (NULL);
-		if (eating(current_seat, big_bang, &philo.hunger_start) != 0)
+		if (eating(cur_seat, big_bang, &philo.hunger_start, philo.meal_count) != 0)
 			break ;
-		if ((current_seat->schedule->must_eat != 0 && \
-		++philo.meal_count == current_seat->schedule->must_eat) || \
-		check_pulse(current_seat->lazy_susan) == 0)
+		if (++philo.meal_count == cur_seat->schedule->must_eat || \
+		check_pulse(cur_seat->lazy_susan) == 0)
 			return (NULL);
-		if (sleeping(current_seat, big_bang, philo.hunger_start) != 0)
-			break ;
-		printer(current_seat, big_bang, "is thinking");
+		printer(cur_seat, big_bang, "is sleeping");
+		if (sleeping_or_dead(philo.hunger_start, cur_seat->schedule->sleep_t, cur_seat->schedule->death_t) != 0)
+			break;
+		thinking(cur_seat, big_bang, philo.hunger_start);
 	}
-	philo_died(current_seat, big_bang);
+	philo_died(cur_seat, big_bang);
 	return (NULL);
 }

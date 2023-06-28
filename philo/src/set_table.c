@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:39:56 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/28 01:17:54 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/28 22:51:00 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	arrange_center(t_center *lazy_susan)
 {
 	lazy_susan->no_spagetti = 1;
 	lazy_susan->death = 0;
+	lazy_susan->start_time = 0;
 	pthread_mutex_init(&lazy_susan->printer_mutex, NULL);
 	pthread_mutex_init(&lazy_susan->start_mutex, NULL);
 	pthread_mutex_init(&lazy_susan->reaper_mutex, NULL);
@@ -75,9 +76,10 @@ int	seat_diners(t_seat *seats, unsigned int philo_count)
 	{
 		if (pthread_create(&seats[i].philo, NULL, &routine, &seats[i]) != 0)
 		{
-			while (--i >= 0)
+			while (--i > 0)
 				pthread_detach(seats[i].philo);
-			write(STDERR_FILENO, "pthread_create fail\n", 20);
+			pthread_detach(seats[0].philo);
+			write(STDERR_FILENO, "pthread_create fail\n", 21);
 			return (2);
 		}
 		i++;
