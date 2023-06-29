@@ -6,11 +6,11 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:44:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/28 00:35:56 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/29 20:09:45 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
 static int	ft_isdigit_str(char *str)
 {

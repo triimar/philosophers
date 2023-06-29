@@ -76,12 +76,15 @@ int	gettimeofday(struct timeval *restrict tp, void *restrict tzp)
     };
     struct timezone {
             int     tz_minuteswest; /* of Greenwich */
-            int     tz_dsttime;     /* type of dst correction to apply */
+            int     tz_dsttime;     /* type of dst correction to apply */ }
 	A 0 return value indicates that the call succeeded.  A -1 return value indicates an error occurred, and in this case an error code is stored into the global variable errno.
 
 int	pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void *), void *arg);
 
 int	pthread_detach(pthread_t thread);
+	The pthread_detach() function marks the thread identified by thread as detached.  When a detached thread terminates, its resources are automatically released back to the system without the need for another thread to join with the terminated thread. Attempting to detach an already detached thread results in
+    unspecified behavior.
+    On success, pthread_detach() returns 0; on error, it returns an error number.
 
 int	pthread_join(pthread_t thread, void **value_ptr); 
 

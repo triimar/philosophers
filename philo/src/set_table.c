@@ -6,19 +6,22 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:39:56 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/28 22:51:00 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/29 20:10:01 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
-static void	place_forks(t_seat *seats, int philo_count)
+static void	place_forks(t_seat *seats, unsigned int philo_count)
 {
-	int	i;
+	unsigned int	i;
 
-	i = -1;
-	while (++i < philo_count)
+	i = 0;
+	while (i < philo_count)
+	{
 		pthread_mutex_init(&seats[i].fork, NULL);
+		i++;
+	}
 	return ;
 }
 
@@ -47,7 +50,7 @@ int	set_table(t_table *table)
 	while (i < table->philo_count)
 	{
 		table->seats[i].nr = i + 1;
-		table->seats[i].schedule = table->schedule;
+		table->seats[i].input = table->input;
 		table->seats[i].lazy_susan = table->lazy_susan;
 		if (i + 1 == table->philo_count)
 			table->seats[i].next_fork = &table->seats[0].fork;

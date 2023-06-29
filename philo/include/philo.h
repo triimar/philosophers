@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:38:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/29 00:57:30 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/29 20:17:21 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_seat
 	unsigned int	nr;
 	pthread_mutex_t	fork;
 	pthread_mutex_t	*next_fork;
-	t_input			*schedule;
+	t_input			*input;
 	t_center		*lazy_susan;
 }	t_seat;
 
@@ -54,30 +54,38 @@ typedef struct s_table
 {
 	unsigned int	philo_count;
 	t_seat			*seats;
-	t_input			*schedule;
+	t_input			*input;
 	t_center		*lazy_susan;
 }	t_table;
 
 typedef struct s_philo
 {
 	t_ms			hunger_start;
-	unsigned int	meal_count;
+	unsigned int	meals;
 }	t_philo;
 
+/*	philo_input_init.c	*/
 int		basic_input_check(int argc, char **args);
 int		init_input(char **args, t_input *s_input, unsigned int *philos);
+/*	set_table.c	*/
 int		set_table(t_table *table);
 int		seat_diners(t_seat *seats, unsigned int philo_count);
+/*	philo_routine.c	*/
 void	*routine(void *arg);
-t_ms	current_time(void);
-void	printer(t_seat	*seat, t_ms big_bang, char *str);
-t_ms	time_elapsed(t_ms start);
-int		sleeping_or_dead(t_ms hunger_start, t_ms sleep_time, t_ms death_time);
 int		check_pulse(t_center *lazy_susan);
-// int		sleeping(t_seat *seat, t_ms big_bang, t_ms hunger);
+/*	eat.c	*/
+int		eating(t_seat *seat, t_ms big_bang, t_ms *hunger, int meals);
+/*	sleep_and_think.c	*/
+int		sleeping(t_seat *seat, t_ms big_bang, t_ms hunger);
 void	thinking(t_seat *seat, t_ms big_bang, t_ms hunger_start);
-int		eating(t_seat *seat, t_ms big_bang, t_ms *hunger, int meal_count);
+/*	clear_table.c	*/
 int		escort_philos(t_table *table);
 void	clear_table(t_table *table);
+/*	time.c	*/
+t_ms	current_time(void);
+t_ms	time_elapsed(t_ms start);
+int		sleep_or_dead(t_ms hunger_start, t_ms sleep_time, t_ms death_time);
+/*	printer.c	*/
+void	printer(t_seat	*seat, t_ms big_bang, char *str);
 
 #endif

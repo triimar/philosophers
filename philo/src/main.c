@@ -6,11 +6,11 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:25:53 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/28 14:36:49 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/29 20:09:37 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
 /*	argv[1] - number_of_philosophers
 	argv[2] - time_to_die
@@ -34,7 +34,7 @@ int	main(int argc, char **argv)
 	}
 	if (init_input((argv + 1), &s_input, &table->philo_count) != 0)
 		return (free(table), EXIT_FAILURE);
-	table->schedule = &s_input;
+	table->input = &s_input;
 	table->lazy_susan = &lazy_susan;
 	if (set_table(table) != 0)
 		return (free(table), EXIT_FAILURE);
