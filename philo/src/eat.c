@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 16:50:57 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/29 20:09:31 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/30 14:40:20 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,21 @@ int	eating(t_seat *seat, t_ms big_bang, t_ms *hunger, int meals)
 	if (seat->nr % 2 != 0)
 	{
 		if (meals == 0 && &seat->fork != seat->next_fork)
-			usleep(1000 * seat->input->eat_t * 2 / 3);
+			usleep((1000 * seat->input->eat_t) * 2 / 3);
 		return (eat_odd(seat, big_bang, hunger));
 	}
 	else
+	{
+		if (seat->input->philo_c % 2 == 0 \
+		&& seat->input->death_t - time_elapsed(*hunger) < seat->input->eat_t \
+		&& 2 * seat->input->eat_t >= seat->input->death_t)
+			return (sleep_or_dead(*hunger, seat->input->death_t, \
+				seat->input->death_t));
+		else if (seat->input->philo_c % 2 != 0 && \
+		seat->input->death_t - time_elapsed(*hunger) < seat->input->eat_t && \
+		2 * seat->input->eat_t + seat->input->sleep_t >= seat->input->death_t)
+			return (sleep_or_dead(*hunger, seat->input->death_t, \
+				seat->input->death_t));
 		return (eat_even(seat, big_bang, hunger));
+	}
 }

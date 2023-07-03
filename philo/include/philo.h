@@ -6,7 +6,7 @@
 /*   By: tmarts <tmarts@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:38:37 by tmarts            #+#    #+#             */
-/*   Updated: 2023/06/29 20:17:21 by tmarts           ###   ########.fr       */
+/*   Updated: 2023/06/30 15:27:24 by tmarts           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_input
 	t_ms			eat_t;
 	t_ms			sleep_t;
 	unsigned int	must_eat;
+	int				philo_c;
 }	t_input;
 
 typedef struct s_center
