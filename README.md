@@ -1,4 +1,4 @@
-# philosophers
+# philosophers 
 This project is about learning how threads work by precisely timing a group of philosophers on when to pick up forks and eat spaghetti without dying from hunger.
 
 <br>
@@ -6,7 +6,6 @@ This project is about learning how threads work by precisely timing a group of p
 <p align="center">
   <img width="777" alt="Screen Shot 2024-03-15 at 6 19 59 PM" src="https://github.com/triimar/philosophers/assets/116010422/389ada60-4cda-404f-974b-4befdc61747a">
 </p>
-
 <br>
 
 ### This is what is happening:
@@ -20,7 +19,7 @@ This project is about learning how threads work by precisely timing a group of p
 - Every philosopher needs to eat and should never starve.
 - Philosophers don’t speak with each other.
 - Philosophers don’t know if another philosopher is about to die.
-- No need to say that philosophers should avoid dying
+- No need to say that philosophers should avoid dying.
 
 If not obvious - "philosophers" are `threads` and 'forks" are `mutex`es.
 
@@ -33,13 +32,13 @@ If not obvious - "philosophers" are `threads` and 'forks" are `mutex`es.
 <br>
 
 ### Running the Program
-Program takes the following arguments:
-**./philo number_of_philosophers *time_to_die* *time_to_eat* *time_to_sleep* *(number_of_times_each_philosopher_must_eat)***
+Program takes the following arguments:\
+**./philo** *`number_of_philosophers`* *`time_to_die`* *`time_to_eat`* *`time_to_sleep`* *(`number_of_times_each_philosopher_must_eat`)*
 
 - `number_of_philosophers` The number of philosophers and also the number of forks.
 - `time_to_die` (in milliseconds): If a philosopher didn’t start eating time_to_die milliseconds since the beginning of their last meal or the beginning of the simulation, they die.
 - `time_to_eat` (in milliseconds): The time it takes for a philosopher to eat. During that time, they will need to hold two forks.
 - `time_to_sleep` (in milliseconds): The time a philosopher will spend sleeping.
-◦ `number_of_times_each_philosopher_must_eat` (optional argument): If all philosophers have eaten at least number_of_times_each_philosopher_must_eat times, the simulation stops. If not specified, the simulation stops when a
+- `number_of_times_each_philosopher_must_eat` (optional argument): If all philosophers have eaten at least number_of_times_each_philosopher_must_eat times, the simulation stops. If not specified, the simulation stops when a
 philosopher dies.
 
